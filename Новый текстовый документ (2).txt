@@ -1,0 +1,75 @@
+// Пользовательские исключения
+class MyArraySizeException extends Exception {
+    public MyArraySizeException(String message) {
+        super(message);
+    }
+}
+
+class MyArrayDataException extends Exception {
+    private int row;
+    private int col;
+    
+    public MyArrayDataException(int row, int col) {
+        super("Ошибка в ячейке [" + row + "][" + col + "]");
+        this.row = row;
+        this.col = col;
+    }
+}
+
+public class Main {
+    // Метод для обработки массива
+    public static int processArray(String[][] array) throws MyArraySizeException, MyArrayDataException {
+        // Проверка размера массива
+        if (array.length != 4 || array[0].length != 4) {
+            throw new MyArraySizeException("Массив должен быть размером 4x4");
+        }
+        
+        int sum = 0;
+        
+        // Проход по всем элементам массива
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                try {
+                    // Попытка преобразования строки в число
+                    sum += Integer.parseInt(array[i][j]);
+                } catch (NumberFormatException e) {
+                    // Если преобразование не удалось
+                    throw new MyArrayDataException(i, j);
+                }
+            }
+        }
+        
+        return sum;
+    }
+    
+    public static void main(String[] args) {
+        // Пример массива для тестирования
+        String[][] testArray = {
+            {"1", "2", "3", "4"},
+            {"5", "6", "7", "8"},
+            {"9", "10", "11", "12"},
+            {"13", "14", "15", "16"}
+        };
+        
+        try {
+            int result = processArray(testArray);
+            System.out.println("Сумма элементов массива: " + result);
+            
+        } catch (MyArraySizeException e) {
+            System.err.println("Ошибка размера массива: " + e.getMessage());
+            
+        } catch (MyArrayDataException e) {
+            System.err.println("Ошибка данных в массиве: " + e.getMessage());
+        }
+        
+        // Пример генерации и обработки ArrayIndexOutOfBoundsException
+        try {
+            String[] array = {"Элемент 1", "Элемент 2"};
+            System.out.println(array[2]);  // Попытка доступа к несуществующему элементу
+            
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.err.println("Поймано исключение: " + e.getMessage());
+            System.err.println("Попытка доступа к несуществующему индексу массива");
+        }
+    }
+}
