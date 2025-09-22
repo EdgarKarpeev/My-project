@@ -1,69 +1,91 @@
-# Функция для вычисления факториала
-def factorial(n):
-    if n < 0:
-        return "Ошибка: факториал отрицательного числа не существует"
-    result = 1
-    for i in range(2, n + 1):
-        result *= i
-    return result
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-# Основной код
-number = int(input("Введите число: "))
-print(f"Факториал числа {number} равен {factorial(number)}")
+public class FactorialTest {
+    
+    @Test
+    public void testFactorialPositive() {
+        assertEquals(120, Factorial.calculate(5));
+        assertEquals(1, Factorial.calculate(0));
+        assertEquals(1, Factorial.calculate(1));
+    }
+    
+    @Test
+    public void testFactorialNegative() {
+        assertThrows(IllegalArgumentException.class, () -> Factorial.calculate(-1));
+    }
+}
 
-# Формула Герона для вычисления площади треугольника
-def triangle_area(a, b, c):
-    # Полупериметр
-    p = (a + b + c) / 2
-    # Площадь по формуле Герона
-    area = (p * (p - a) * (p - b) * (p - c)) ** 0.5
-    return area
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-# Основной код
-a = float(input("Введите сторону a: "))
-b = float(input("Введите сторону b: "))
-c = float(input("Введите сторону c: "))
+public class TriangleAreaTest {
+    
+    @Test
+    public void testValidTriangle() {
+        assertEquals(6.0, TriangleArea.calculate(3, 4, 5), 0.001);
+        assertEquals(1.984, TriangleArea.calculate(2, 3, 4), 0.001);
+    }
+    
+    @Test
+    public void testInvalidTriangle() {
+        assertThrows(IllegalArgumentException.class, () -> TriangleArea.calculate(1, 2, 3));
+    }
+}
 
-if a + b > c and a + c > b and b + c > a:
-    print(f"Площадь треугольника: {triangle_area(a, b, c)}")
-else:
-    print("Треугольник с такими сторонами не существует")
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-# Функция для выполнения операций
-def calculator(num1, num2, operation):
-    if operation == '+':
-        return num1 + num2
-    elif operation == '-':
-        return num1 - num2
-    elif operation == '*':
-        return num1 * num2
-    elif operation == '/':
-        if num2 == 0:
-            return "Ошибка: деление на ноль"
-        return num1 / num2
-    else:
-        return "Ошибка: неверная операция"
+public class CalculatorTest {
+    
+    @Test
+    public void testAddition() {
+        assertEquals(5, Calculator.calculate(2, 3, '+'));
+    }
+    
+    @Test
+    public void testSubtraction() {
+        assertEquals(-1, Calculator.calculate(2, 3, '-'));
+    }
+    
+    @Test
+    public void testMultiplication() {
+        assertEquals(6, Calculator.calculate(2, 3, '*'));
+    }
+    
+    @Test
+    public void testDivision() {
+        assertEquals(1.5, Calculator.calculate(3, 2, '/'), 0.001);
+    }
+    
+    @Test
+    public void testDivisionByZero() {
+        assertThrows(ArithmeticException.class, () -> Calculator.calculate(3, 0, '/'));
+    }
+    
+    @Test
+    public void testInvalidOperation() {
+        assertEquals("Ошибка: неверная операция", Calculator.calculate(3, 2, '%'));
+    }
+}
 
-# Основной код
-print("Доступные операции: +, -, *, /")
-num1 = float(input("Введите первое число: "))
-num2 = float(input("Введите второе число: "))
-operation = input("Введите операцию: ")
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.*;
 
-result = calculator(num1, num2, operation)
-print(f"Результат: {result}")
-
-# Функция для сравнения чисел
-def compare_numbers(num1, num2):
-    if num1 > num2:
-        return f"{num1} больше {num2}"
-    elif num1 < num2:
-        return f"{num1} меньше {num2}"
-    else:
-        return f"{num1} равно {num2}"
-
-# Основной код
-num1 = int(input("Введите первое число: "))
-num2 = int(input("Введите второе число: "))
-
-print(compare_numbers(num1, num2))
+public class CompareNumbersTest {
+    
+    @Test
+    public void testFirstGreater() {
+        assertEquals("5 больше 3", CompareNumbers.compare(5, 3));
+    }
+    
+    @Test
+    public void testSecondGreater() {
+        assertEquals("3 меньше 5", CompareNumbers.compare(3, 5));
+    }
+    
+    @Test
+    public void testEqualNumbers() {
+        assertEquals("4 равно 4", CompareNumbers.compare(4, 4));
+    }
+}
