@@ -6,6 +6,8 @@ import static com.aston.lesson5.ArrayProcessor.processArray;
 import com.aston.lesson5.exeption.MyArrayDataException;
 import com.aston.lesson5.exeption.MyArraySizeException;
 // comment
+
+
 public class Main {
 
   public static void main(String[] args) {
