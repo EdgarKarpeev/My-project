@@ -1,0 +1,32 @@
+import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class OnlinePaymentTest {
+    @Test
+    public void testOnlinePayment() {
+        System.setProperty("webdriver.chrome.driver", "путь_к_chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+        driver.get("http://mts.by");
+
+        OnlinePaymentPage page = new OnlinePaymentPage(driver);
+
+        // Проверка незаполненных полей
+        assert page.areCardFieldsEmpty() : "Поля для ввода карты не пусты";
+
+        // Заполнение полей и проверка
+        page.setServices("Услуги связи");
+        page.setPhoneNumber("297777777");
+        page.clickContinue();
+
+        // Проверка суммы и номера телефона
+        String amount = page.getAmount();
+        String phone = page.getDisplayedPhone();
+        assert !amount.isEmpty() && phone.equals("297777777") : "Сумма или номер телефона не отображаются корректно";
+
+        // Проверка иконок платежных систем
+        assert page.arePaymentIconsVisible() : "Иконки платежных систем не отображаются";
+
+        driver.quit();
+    }
+}
