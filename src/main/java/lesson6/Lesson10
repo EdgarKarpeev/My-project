@@ -1,0 +1,51 @@
+public class OnlinePaymentPage {
+    private WebDriver driver;
+
+    public OnlinePaymentPage(WebDriver driver) {
+        this.driver = driver;
+    }
+
+    // Локаторы элементов
+    private By servicesField = By.id("service-type");
+    private By phoneField = By.id("phone-number");
+    private By continueButton = By.id("continue-button");
+    private By amountField = By.id("amount");
+    private By displayedPhone = By.id("displayed-phone");
+    private By cardFields = By.className("card-field");
+    private By paymentIcons = By.className("payment-icon");
+
+    // Методы для взаимодействия с элементами
+    public void setServices(String service) {
+        driver.findElement(servicesField).sendKeys(service);
+    }
+
+    public void setPhoneNumber(String number) {
+        driver.findElement(phoneField).sendKeys(number);
+    }
+
+    public void clickContinue() {
+        driver.findElement(continueButton).click();
+    }
+
+    public String getAmount() {
+        return driver.findElement(amountField).getText();
+    }
+
+    public String getDisplayedPhone() {
+        return driver.findElement(displayedPhone).getText();
+    }
+
+    public boolean areCardFieldsEmpty() {
+        List<WebElement> fields = driver.findElements(cardFields);
+        for (WebElement field : fields) {
+            if (!field.getAttribute("value").isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public boolean arePaymentIconsVisible() {
+        return !driver.findElements(paymentIcons).isEmpty();
+    }
+}
