@@ -1,0 +1,56 @@
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+public class MTSOnlinePaymentTest {
+    public static void main(String[] args) {
+        // Инициализация драйвера
+        System.setProperty("webdriver.chrome.driver", "путь_к_chromedriver.exe");
+        WebDriver driver = new ChromeDriver();
+
+        try {
+            // Открытие сайта
+            driver.get("http://mts.by");
+
+            // Проверка названия блока
+            WebElement blockTitle = driver.findElement(By.xpath("//h2[contains(text(), 'Онлайн пополнение без комиссии')]"));
+            if (blockTitle.getText().equals("Онлайн пополнение без комиссии")) {
+                System.out.println("Название блока проверено успешно.");
+            } else {
+                System.out.println("Ошибка: название блока не соответствует ожидаемому.");
+            }
+
+            // Проверка наличия логотипов платежных систем
+            WebElement logos = driver.findElement(By.xpath("//div[@class='payment-logos']"));
+            if (logos.isDisplayed()) {
+                System.out.println("Логотипы платежных систем отображены.");
+            } else {
+                System.out.println("Ошибка: логотипы платежных систем не отображены.");
+            }
+
+            // Проверка ссылки "Подробнее о сервисе"
+            WebElement detailsLink = driver.findElement(By.xpath("//a[contains(text(), 'Подробнее о сервисе')]"));
+            detailsLink.click();
+
+            // Проверка заполнения полей и кнопки "Продолжить"
+            driver.findElement(By.id("service-type")).sendKeys("Услуги связи");
+            driver.findElement(By.id("phone-number")).sendKeys("297777777");
+            driver.findElement(By.id("continue-button")).click();
+
+            // Проверка отображения суммы и номера телефона
+            WebElement displayedAmount = driver.findElement(By.id("amount"));
+            WebElement displayedPhone = driver.findElement(By.id("displayed-phone"));
+
+            if (displayedAmount.isDisplayed() && displayedPhone.getText().equals("297777777")) {
+                System.out.println("Проверка суммы и номера телефона прошла успешно.");
+            } else {
+                System.out.println("Ошибка: сумма или номер телефона не отображаются корректно.");
+            }
+        } catch (Exception e) {
+            System.out.println("Ошибка: " + e.getMessage());
+        } finally {
+            driver.quit();
+        }
+    }
+}
